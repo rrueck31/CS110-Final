@@ -1,7 +1,7 @@
-import pygame, sys
+import pygame, sys, random
 
 
-FPS = 60
+FPS = 75
 
 
 
@@ -23,6 +23,64 @@ pygame.display.set_caption("PONG")
 
 FontSize = 36
 Font = pygame.font.SysFont('OCR A Extended', FontSize)
+
+def showStartScreen():
+    titleFont = pygame.font.SysFont('OCR A Extended', FontSize)
+    subFont = pygame.font.SysFont('OCR A Extended', 16)
+    title1 = titleFont.render("PONG", True, WHITE)
+    title2 = subFont.render("Press any key to play", True, WHITE)
+
+    Title = True
+    
+    while Title:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYUP:
+                pygame.event.get()
+                Title = False
+            screen.fill(BLACK)
+            screen.blit(title1, [100, 25])
+            screen.blit(title2, [50, 325])
+
+
+        pygame.display.update()
+        clock.tick(FPS)
+
+def showWinningScreen():
+    titleFont = pygame.font.SysFont('OCR A Extended', FontSize)
+    subFont = pygame.font.SysFont('OCR A Extended', 16)
+    text1 = titleFont.render("YOU WIN!", True, WHITE)
+    text2 = subFont.render("Enter intials:", True, WHITE)
+
+    gameOver = True
+
+    while gameOver:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            screen.fill(BLACK)
+            screen.blit(text1, [70, 25])
+            screen.blit(text2, [50, 100])
+
+        pygame.display.update()
+        clock.tick(FPS)
+
+def showLosingScreen():
+    titleFont = pygame.font.SysFont('OCR A Extended', FontSize)
+    text1 = titleFont.render("YOU LOSE", True, WHITE)
+
+    gameOver = True
+
+    while gameOver:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            screen.fill(BLACK)
+            screen.blit(text1, [70, 25])
+
+        pygame.display.update()
+        clock.tick(FPS)
 
 def drawArena():
     screen.fill(BLACK)
@@ -74,14 +132,8 @@ def checkPointScored(paddle1, paddle2, ball, score1, score2, ballDirX):
     else:
         return score1,score2
 
-def artificialIntelligence(ball, ballDirX, paddle2):
-    if ballDirX == -1:
-        if paddle2.centery < (Window_height/2):
-            paddle2.y += 1
-        elif paddle2.centery > (Window_height/2):
-            paddle2.y -= 1
-
-    elif ballDirX == 1:
+def artificialIntelligence(ball, ballDirY, paddle2):
+    if ballDirY == 1:
         if paddle2.centery < ball.centery:
             paddle2.y += 1
         else:
@@ -91,11 +143,12 @@ def artificialIntelligence(ball, ballDirX, paddle2):
 def displayScore(score1, score2):
     p1Score = Font.render('%s' %(score1), True, WHITE)
     p2Score = Font.render('%s' %(score2), True, WHITE)
-    screen.blit(p1Score,[75,25])
+    screen.blit(p1Score,[50,25])
     screen.blit(p2Score,[225,25])
 
 def main():
-
+    showStartScreen()
+    
     ballx = Window_width/2 - LineThickness/2
     bally = Window_height/2 - LineThickness/2
     p1POS = (Window_height - PaddleSize)/2
@@ -143,8 +196,16 @@ def main():
 
         displayScore(score1, score2)
 
-        pygame.display.update()
-        clock.tick(FPS)
+        if score1 == 5:
+            showWinningScreen()
+        elif score2 == 5:
+            showLosingScreen()
+        else:
+            pygame.display.update()
+            clock.tick(FPS)
+
+
+
 
 main()
 
