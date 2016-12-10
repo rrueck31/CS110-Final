@@ -31,7 +31,6 @@ def showWinningScreen(screen, clock, FontSize, color1, color2):
     titleFont = pygame.font.SysFont('OCR A Extended', FontSize)
     subFont = pygame.font.SysFont('OCR A Extended', 16)
     text1 = titleFont.render("YOU WIN!", True, color1)
-    text2 = subFont.render("Enter intials:", True, color1)
 
     gameOver = True
 
@@ -41,7 +40,6 @@ def showWinningScreen(screen, clock, FontSize, color1, color2):
                 pygame.quit()
             screen.fill(color2)
             screen.blit(text1, [70, 25])
-            screen.blit(text2, [50, 100])
 
         pygame.display.update()
         clock.tick(FPS)
